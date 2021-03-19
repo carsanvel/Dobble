@@ -1,21 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dobble;
 
-/**
- *
- * @author carvsk
- */
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 public class Dobble {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args) throws FileNotFoundException {
+
+        File file = new File("Cartas\\carta1.png");
+        Carta[][] cartas = RepartidorDeCartas.reparte(4);
+        MainFrame frame = new MainFrame();
+        frame.execute();
+    }
+    
+    public static void print(Carta[][] cartas) {
+        for (int i = 0; i < cartas.length; i++) {
+            System.out.println("Jugador" + i);
+            for (int j = 0; j < cartas[i].length; j++) {
+                System.out.println(cartas[i][j].getDirectorio());
+            }
+        }
     }
     
 }
