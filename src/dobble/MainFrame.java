@@ -8,17 +8,17 @@ public class MainFrame extends JFrame {
     
     private GameDisplay gameDisplay;
     
-    public MainFrame() {
+    public MainFrame(ManoCartas[] jugadores, Carta cartaExtra) {
         setTitle("Dobble");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1000, 700);
         setLocationRelativeTo(null);
         getContentPane().setLayout(new BorderLayout());
-        initializeDisplay();
+        initializeDisplay(jugadores, cartaExtra);
     }
 
-    private void initializeDisplay() {
-        GameDisplay display = new GameDisplay(new Carta("carta1"), null);
+    private void initializeDisplay(ManoCartas[] jugadores, Carta cartaExtra) {
+        GameDisplay display = new GameDisplay(cartaExtra, jugadores);
         gameDisplay = display;
         getContentPane().add((JPanel)display, BorderLayout.CENTER);
     }

@@ -12,9 +12,9 @@ public class ManoCartas {
 
     public ManoCartas(Stack<Carta> cartas) {
         this.cartas = cartas;
-        primeraCarta = cartas.pop();
-        cartasPendientes = cartas.size();
         totalCartas = cartas.size();
+        cartasPendientes = cartas.size();
+        primeraCarta = cartas.pop();
         ultimaTirada = null;
     }
     
