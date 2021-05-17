@@ -30,8 +30,14 @@ public class GameDisplay extends JPanel {
     private Carta icono;
     private Carta atras;
     private boolean primeraPintada = true;
+    private Cliente cliente;
+    private boolean[] inicio;
 
-    public GameDisplay(Carta prieraCarta, ManoCartas[] jugadores) {
+    public GameDisplay(Carta prieraCarta, ManoCartas[] jugadores, Cliente cliente) {
+        this.cliente = cliente;
+        inicio = new boolean[2];
+        inicio[0] = false;
+        inicio[1] = false;
         icono = new Carta("cartaPortada");
         atras = new Carta("cartaAtras");
         monton = new Stack<Carta>();
@@ -46,6 +52,7 @@ public class GameDisplay extends JPanel {
         display(carta);
         repaint();
     }
+    
     
     public void display (Carta carta) {
         this.carta = carta;
@@ -177,6 +184,22 @@ public class GameDisplay extends JPanel {
         }
     }
     
+    public void tiradaRival() {
+        monton.push(jugadores[1].getPrimera());
+        jugadores[1].tirarCarta();
+        repaint();
+    }
+    
+    public void cancelarTiradaRival() {
+        monton.pop();
+        jugadores[1].cancelarTirada();
+        repaint();
+    }
+    
+    public void notificarInicioRival() {
+        inicio[1] = true;
+    }
+    
     private class CompleteMouseListener implements MouseListener, MouseMotionListener {
 
         private boolean pressed = false;
@@ -199,7 +222,12 @@ public class GameDisplay extends JPanel {
                 cartaY = getHeight()/16 * 11;
             }
             if (primeraPintada && isInButton(e.getX(), e.getY())) {
-                primeraPintada = false;
+                if(inicio[1]) {
+                    primeraPintada = false;
+                }
+                //primeraPintada = false;
+                inicio[0] = true;
+                cliente.notificarRival(1);
             }
         }
 
@@ -208,6 +236,7 @@ public class GameDisplay extends JPanel {
             if(pressed && isInCenter(cartaX + (int) (getWidth()/7), cartaY)) {
                 monton.push(jugadores[0].getPrimera());
                 jugadores[0].tirarCarta();
+                cliente.notificarRival(2);
             }
             pressed = false;
             cartaX = (int)(getWidth()/3.2);
