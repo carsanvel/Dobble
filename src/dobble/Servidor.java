@@ -10,9 +10,17 @@ public class Servidor {
     
     private final EscuchaServidor escucha;
     private GameDisplay gameDisplay;
+    private Cliente cliente;
     
-    public Servidor(GameDisplay gameDisplay) {
+    public Servidor() {
         escucha = new EscuchaServidor();
+        //this.gameDisplay = gameDisplay;
+    }
+    
+    public void setCliente(Cliente cliente) {
+       this.cliente = cliente; 
+    }
+    public void setGameDisplay(GameDisplay gameDisplay) {
         this.gameDisplay = gameDisplay;
     }
     
@@ -33,7 +41,13 @@ public class Servidor {
                     ObjectInputStream flujoEntrada = new ObjectInputStream(socket.getInputStream());
                     paquete = (PaqueteEnvio)flujoEntrada.readObject();
                     if(paquete.getMensaje() == 0) {
-                        //Notificar al cliente que el rival ha confirmado partida
+                        ManoCartas[] manos = paquete.getManos();
+                        if(manos != null) {
+                            ManoCartas aux = manos[0];
+                            manos[0] = manos[1];
+                            manos[1] = aux;
+                        }
+                        cliente.confirmaInicio(manos, paquete.getCartaExtra());
                     }
                     if(paquete.getMensaje() == 1) {
                         gameDisplay.notificarInicioRival();

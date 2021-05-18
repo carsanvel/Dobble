@@ -1,5 +1,6 @@
 package dobble;
 
+import static dobble.Dobble.rellenaPila;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,9 +8,12 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Stack;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 public class Cliente extends JFrame{
     
@@ -17,15 +21,30 @@ public class Cliente extends JFrame{
     private Socket socket;
     private String ipRival;
     private int puertoRival;
+    private ButtonGroup buttons;
+    private JRadioButton hostButton;
+    private JRadioButton clientButton;
+    private boolean host;
+    private Servidor servidor;
+    private boolean[] confirmado;
+    private ManoCartas[] manos;
+    private Carta cartaExtra;
     
-    public Cliente() {
+    public Cliente(Servidor servidor) {
+        host = false;
+        confirmado = new boolean[2];
+        confirmado[0] = false;
+        confirmado[1] = false;
+        manos = null;
+        cartaExtra = null;
+        this.servidor = servidor;
         setTitle("Dobble");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(400, 200);
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(clientDisplay(), BorderLayout.NORTH);
-        initializeButton();
+        initializeButtons();
     }
     
     public void execute() {
@@ -38,11 +57,21 @@ public class Cliente extends JFrame{
         return display;
     }
     
-    public void initializeButton() {
+    public void initializeButtons() {
         JPanel buttonPanel = new JPanel();
+        buttons = new ButtonGroup();
+        hostButton = new JRadioButton("Host", true);
+        clientButton = new JRadioButton("Client");
+        buttons.add(hostButton);
+        buttons.add(clientButton);
         JButton acceptButton = new JButton("Aceptar");
         acceptButton.addActionListener(accept());
-        buttonPanel.add(acceptButton);
+        buttonPanel.setLayout(new BorderLayout());
+        buttonPanel.add(hostButton, BorderLayout.NORTH);
+        buttonPanel.add(clientButton, BorderLayout.CENTER);
+        JPanel auxPanel = new JPanel();
+        auxPanel.add(acceptButton);
+        buttonPanel.add(auxPanel, BorderLayout.SOUTH);
         getContentPane().add(buttonPanel, BorderLayout.CENTER);
     }
     
@@ -52,13 +81,36 @@ public class Cliente extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    confirmado[0] = true;
                     ipRival = clientDisplay.getIp();
                     puertoRival = Integer.parseInt(clientDisplay.getPort());
                     socket = new Socket(ipRival, puertoRival);
-                    PaqueteEnvio paquete = new PaqueteEnvio(ipRival, puertoRival, 0);
-                    ObjectOutputStream flujoSalida = new ObjectOutputStream(socket.getOutputStream());
-                    flujoSalida.writeObject(paquete);
-                    //flujoSalida.close();
+                    PaqueteEnvio paquete = null;
+                    if (hostButton.isSelected()) {
+                        host = true;
+                        Reparticion reparticion = RepartidorDeCartas.reparte(2);
+                        Carta[][] cartas = reparticion.getCartas();
+                        Stack<Carta> pila1 = new Stack<>();
+                        Stack<Carta> pila2 = new Stack<>();
+                        rellenaPila(cartas[0], pila1);
+                        rellenaPila(cartas[1], pila2);
+                        manos = new ManoCartas[2];
+                        manos[0] = new ManoCartas(pila1);
+                        manos[1] = new ManoCartas(pila2);
+                        paquete = new PaqueteEnvio(ipRival, puertoRival, 0, manos, reparticion.getCartaExtra());
+                        ObjectOutputStream flujoSalida = new ObjectOutputStream(socket.getOutputStream());
+                        flujoSalida.writeObject(paquete);
+                        while(confirmado[1] == false) {}
+                        MainFrame frame = createMainFrame(manos, reparticion.getCartaExtra());
+                        frame.execute();
+                    } else {
+                        paquete = new PaqueteEnvio(ipRival, puertoRival, 0, null, null);
+                        ObjectOutputStream flujoSalida = new ObjectOutputStream(socket.getOutputStream());
+                        flujoSalida.writeObject(paquete);
+                        while(confirmado[1] == false) {}
+                        MainFrame frame = createMainFrame(manos, cartaExtra);
+                        frame.execute();
+                    }
                     setVisible(false);
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
@@ -68,7 +120,7 @@ public class Cliente extends JFrame{
     }
     
     public void notificarRival(int tipoNotificacion) {
-        PaqueteEnvio paquete = new PaqueteEnvio(ipRival, puertoRival, tipoNotificacion);
+        PaqueteEnvio paquete = new PaqueteEnvio(ipRival, puertoRival, tipoNotificacion, null, null);
         try {
             ObjectOutputStream flujoSalida = new ObjectOutputStream(socket.getOutputStream());
             flujoSalida.writeObject(paquete);
@@ -78,4 +130,21 @@ public class Cliente extends JFrame{
         }
     }
     
+    public void confirmaInicio(ManoCartas[] manos, Carta carta) {
+        confirmado[1] = true;
+        if(host == false) {
+            this.manos = manos;
+            this.cartaExtra = carta;
+        }
+    }
+    
+    private static void rellenaPila(Carta[] cartas, Stack<Carta> pila) {
+        for (int i = 0; i < cartas.length; i++) {
+            pila.push(cartas[i]);
+        }
+    }
+    
+    private MainFrame createMainFrame(ManoCartas[] manos, Carta cartaExtra) {
+        return new MainFrame(manos, cartaExtra, this);
+    }
 }

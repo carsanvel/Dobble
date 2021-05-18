@@ -53,6 +53,9 @@ public class GameDisplay extends JPanel {
         repaint();
     }
     
+    public Cliente getCliente() {
+        return cliente;
+    }
     
     public void display (Carta carta) {
         this.carta = carta;
