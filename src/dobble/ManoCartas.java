@@ -1,8 +1,9 @@
 package dobble;
 
+import java.io.Serializable;
 import java.util.Stack;
 
-public class ManoCartas {
+public class ManoCartas implements Serializable{
 
     private Stack<Carta> cartas;
     private int cartasPendientes;
