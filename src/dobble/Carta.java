@@ -1,6 +1,8 @@
 package dobble;
 
-public class Carta {
+import java.io.Serializable;
+
+public class Carta implements Serializable{
 
     private String directorio;
 
