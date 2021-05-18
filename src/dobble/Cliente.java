@@ -103,6 +103,7 @@ public class Cliente extends JFrame{
                         while(confirmado[1] == false) {}
                         MainFrame frame = createMainFrame(manos, reparticion.getCartaExtra());
                         frame.execute();
+                        servidor.setGameDisplay(frame.getGameDisplay());
                     } else {
                         paquete = new PaqueteEnvio(ipRival, puertoRival, 0, null, null);
                         ObjectOutputStream flujoSalida = new ObjectOutputStream(socket.getOutputStream());
@@ -110,6 +111,7 @@ public class Cliente extends JFrame{
                         while(confirmado[1] == false) {}
                         MainFrame frame = createMainFrame(manos, cartaExtra);
                         frame.execute();
+                        servidor.setGameDisplay(frame.getGameDisplay());
                     }
                     setVisible(false);
                 } catch (IOException ex) {
