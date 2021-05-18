@@ -97,7 +97,8 @@ public class Cliente extends JFrame{
                         manos = new ManoCartas[2];
                         manos[0] = new ManoCartas(pila1);
                         manos[1] = new ManoCartas(pila2);
-                        paquete = new PaqueteEnvio(ipRival, puertoRival, 0, manos, reparticion.getCartaExtra());
+                        cartaExtra = reparticion.getCartaExtra();
+                        paquete = new PaqueteEnvio(ipRival, puertoRival, 0, manos, cartaExtra);
                         ObjectOutputStream flujoSalida = new ObjectOutputStream(socket.getOutputStream());
                         flujoSalida.writeObject(paquete);
                         confirmaInicio(null, null, false);
