@@ -31,6 +31,7 @@ public class Servidor {
                 while(true) {
                     Socket socket = socketServidor.accept();
                     ObjectInputStream flujoEntrada = new ObjectInputStream(socket.getInputStream());
+                    System.out.println("Holaa");
                     paquete = (PaqueteEnvio)flujoEntrada.readObject();
                     //socket.close();
                     if(paquete.getMensaje() == 0) {
