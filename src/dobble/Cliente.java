@@ -100,20 +100,11 @@ public class Cliente extends JFrame{
                         paquete = new PaqueteEnvio(ipRival, puertoRival, 0, manos, reparticion.getCartaExtra());
                         ObjectOutputStream flujoSalida = new ObjectOutputStream(socket.getOutputStream());
                         flujoSalida.writeObject(paquete);
-                        while(confirmado[1] == false) {}
-                        MainFrame frame = createMainFrame(manos, reparticion.getCartaExtra());
-                        frame.execute();
-                        servidor.setGameDisplay(frame.getGameDisplay());
                     } else {
                         paquete = new PaqueteEnvio(ipRival, puertoRival, 0, null, null);
                         ObjectOutputStream flujoSalida = new ObjectOutputStream(socket.getOutputStream());
                         flujoSalida.writeObject(paquete);
-                        while(confirmado[1] == false) {}
-                        MainFrame frame = createMainFrame(manos, cartaExtra);
-                        frame.execute();
-                        servidor.setGameDisplay(frame.getGameDisplay());
                     }
-                    setVisible(false);
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
                 }
@@ -138,6 +129,12 @@ public class Cliente extends JFrame{
             this.manos = manos;
             this.cartaExtra = carta;
         }
+        if(confirmado[0]) {
+            setVisible(false);
+            MainFrame frame = createMainFrame();
+            frame.execute();
+            servidor.setGameDisplay(frame.getGameDisplay());
+        }
     }
     
     private static void rellenaPila(Carta[] cartas, Stack<Carta> pila) {
@@ -146,7 +143,7 @@ public class Cliente extends JFrame{
         }
     }
     
-    private MainFrame createMainFrame(ManoCartas[] manos, Carta cartaExtra) {
+    private MainFrame createMainFrame() {
         return new MainFrame(manos, cartaExtra, this);
     }
 }

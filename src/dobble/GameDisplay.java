@@ -34,13 +34,15 @@ public class GameDisplay extends JPanel {
     private boolean[] inicio;
 
     public GameDisplay(Carta prieraCarta, ManoCartas[] jugadores, Cliente cliente) {
+        System.out.println("holaa");
         this.cliente = cliente;
+        System.out.println("adios");
         inicio = new boolean[2];
         inicio[0] = false;
         inicio[1] = false;
         icono = new Carta("cartaPortada");
         atras = new Carta("cartaAtras");
-        monton = new Stack<Carta>();
+        monton = new Stack<>();
         monton.push(prieraCarta);
         carta = prieraCarta;
         this.jugadores = jugadores;
