@@ -58,7 +58,7 @@ public class Cliente extends JFrame{
                     PaqueteEnvio paquete = new PaqueteEnvio(ipRival, puertoRival, 0);
                     ObjectOutputStream flujoSalida = new ObjectOutputStream(socket.getOutputStream());
                     flujoSalida.writeObject(paquete);
-                    flujoSalida.close();
+                    //flujoSalida.close();
                     setVisible(false);
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
@@ -72,7 +72,7 @@ public class Cliente extends JFrame{
         try {
             ObjectOutputStream flujoSalida = new ObjectOutputStream(socket.getOutputStream());
             flujoSalida.writeObject(paquete);
-            flujoSalida.close();
+            //flujoSalida.close();
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
