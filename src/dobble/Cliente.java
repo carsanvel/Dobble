@@ -132,7 +132,7 @@ public class Cliente extends JFrame{
                 this.cartaExtra = carta;
             }
         }
-        if(confirmado[0]) {
+        if(confirmado[0] && confirmado[1]) {
             setVisible(false);
             MainFrame frame = createMainFrame();
             frame.execute();
