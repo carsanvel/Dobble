@@ -10,8 +10,11 @@ public class Dobble {
 
     public static void main(String[] args) throws FileNotFoundException {
         
-        Cliente cliente = new Cliente();
-        File file = new File("Cartas\\carta1.png");
+        Servidor servidor = new Servidor();
+        Cliente cliente = new Cliente(servidor);
+        servidor.setCliente(cliente);
+        cliente.execute();
+        /*
         Reparticion reparticion = RepartidorDeCartas.reparte(2);
         Carta[][] cartas = reparticion.getCartas();
         Stack<Carta> pila1 = new Stack<>();
@@ -21,11 +24,13 @@ public class Dobble {
         ManoCartas[] manos = new ManoCartas[2];
         manos[0] = new ManoCartas(pila1);
         manos[1] = new ManoCartas(pila2);
+                
         MainFrame frame = new MainFrame(manos, reparticion.getCartaExtra(), cliente);
         frame.execute();
         
         cliente.execute();
-        Servidor servidor = new Servidor(frame.getGameDisplay());
+                */
+        //Servidor servidor = new Servidor(frame.getGameDisplay());
                 
     }
     
