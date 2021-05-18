@@ -28,12 +28,10 @@ public class Servidor {
             try {
                 PaqueteEnvio paquete;
                 ServerSocket socketServidor = new ServerSocket(9999);
+                Socket socket = socketServidor.accept();
                 while(true) {
-                    Socket socket = socketServidor.accept();
                     ObjectInputStream flujoEntrada = new ObjectInputStream(socket.getInputStream());
-                    System.out.println("Holaa");
                     paquete = (PaqueteEnvio)flujoEntrada.readObject();
-                    //socket.close();
                     if(paquete.getMensaje() == 0) {
                         //Notificar al cliente que el rival ha confirmado partida
                     }
