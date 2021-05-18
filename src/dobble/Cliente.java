@@ -134,6 +134,9 @@ public class Cliente extends JFrame{
             MainFrame frame = createMainFrame();
             frame.execute();
             servidor.setGameDisplay(frame.getGameDisplay());
+            PaqueteEnvio paquete = new PaqueteEnvio(ipRival, puertoRival, 0, manos, cartaExtra);
+            ObjectOutputStream flujoSalida = new ObjectOutputStream(socket.getOutputStream());
+            flujoSalida.writeObject(paquete);
         }
     }
     
