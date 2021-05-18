@@ -47,7 +47,7 @@ public class Servidor {
                             manos[0] = manos[1];
                             manos[1] = aux;
                         }
-                        cliente.confirmaInicio(manos, paquete.getCartaExtra());
+                        cliente.confirmaInicio(manos, paquete.getCartaExtra(), true);
                     }
                     if(paquete.getMensaje() == 1) {
                         gameDisplay.notificarInicioRival();

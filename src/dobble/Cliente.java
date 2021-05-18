@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Stack;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -102,6 +100,7 @@ public class Cliente extends JFrame{
                         paquete = new PaqueteEnvio(ipRival, puertoRival, 0, manos, reparticion.getCartaExtra());
                         ObjectOutputStream flujoSalida = new ObjectOutputStream(socket.getOutputStream());
                         flujoSalida.writeObject(paquete);
+                        confirmaInicio(null, null, false)
                     } else {
                         paquete = new PaqueteEnvio(ipRival, puertoRival, 0, null, null);
                         ObjectOutputStream flujoSalida = new ObjectOutputStream(socket.getOutputStream());
@@ -125,9 +124,9 @@ public class Cliente extends JFrame{
         }
     }
     
-    public void confirmaInicio(ManoCartas[] manos, Carta carta) {
+    public void confirmaInicio(ManoCartas[] manos, Carta carta, boolean cambiar) {
         confirmado[1] = true;
-        if(host == false) {
+        if(host == false && cambiar) {
             this.manos = manos;
             this.cartaExtra = carta;
         }
@@ -136,14 +135,6 @@ public class Cliente extends JFrame{
             MainFrame frame = createMainFrame();
             frame.execute();
             servidor.setGameDisplay(frame.getGameDisplay());
-            PaqueteEnvio paquete = new PaqueteEnvio(ipRival, puertoRival, 0, manos, cartaExtra);
-            ObjectOutputStream flujoSalida;
-            try {
-                flujoSalida = new ObjectOutputStream(socket.getOutputStream());
-                flujoSalida.writeObject(paquete);
-            } catch (IOException ex) {
-                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
     }
     
