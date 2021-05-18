@@ -199,6 +199,7 @@ public class GameDisplay extends JPanel {
     public void notificarInicioRival() {
         inicio[1] = true;
         if(inicio[0]) {
+            primeraPintada = false;
             repaint();
         }
     }
