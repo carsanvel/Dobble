@@ -100,7 +100,7 @@ public class Cliente extends JFrame{
                         paquete = new PaqueteEnvio(ipRival, puertoRival, 0, manos, reparticion.getCartaExtra());
                         ObjectOutputStream flujoSalida = new ObjectOutputStream(socket.getOutputStream());
                         flujoSalida.writeObject(paquete);
-                        confirmaInicio(null, null, false)
+                        confirmaInicio(null, null, false);
                     } else {
                         paquete = new PaqueteEnvio(ipRival, puertoRival, 0, null, null);
                         ObjectOutputStream flujoSalida = new ObjectOutputStream(socket.getOutputStream());
@@ -125,10 +125,12 @@ public class Cliente extends JFrame{
     }
     
     public void confirmaInicio(ManoCartas[] manos, Carta carta, boolean cambiar) {
-        confirmado[1] = true;
-        if(host == false && cambiar) {
-            this.manos = manos;
-            this.cartaExtra = carta;
+        if(cambiar) {
+            confirmado[1] = true;
+            if(host == false) {
+                this.manos = manos;
+                this.cartaExtra = carta;
+            }
         }
         if(confirmado[0]) {
             setVisible(false);
