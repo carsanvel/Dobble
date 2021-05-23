@@ -106,6 +106,7 @@ public class Cliente extends JFrame{
                         paquete = new PaqueteEnvio(ipRival, puertoRival, 0, null, null);
                         ObjectOutputStream flujoSalida = new ObjectOutputStream(socket.getOutputStream());
                         flujoSalida.writeObject(paquete);
+                        confirmaInicio(null, null, false);
                     }
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
