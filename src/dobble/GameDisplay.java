@@ -99,7 +99,14 @@ public class GameDisplay extends JPanel {
     }
     
     public boolean isInButton(int x, int y) {
-        if (x < getHeight()/8 *7 && x > getWidth()/8 && y > getHeight()/8 *7) {
+        if (x < getWidth()/8 *2 && x > getWidth()/8 && y > getHeight()/8 *7) {
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean isInCancel(int x, int y) {
+        if (x < getWidth()/8 *7 && x > getWidth()/8 * 6 && y > getHeight()/8 *7) {
             return true;
         }
         return false;
@@ -159,6 +166,7 @@ public class GameDisplay extends JPanel {
             g.drawImage(imageOf(jugadores[1].getPrimera().getDirectorio()), (int)(getWidth()/3.2), 0, (int) (getWidth()/3.5), (int)(getHeight()/3.5), null);
             g.setColor(new Color(245,80,80));
             g.fillRect(getWidth()/8, getHeight()/8 *7, getWidth()/8, getHeight());
+            g.fillRect(getWidth()/8 * 6, getHeight()/8 *7, getWidth()/8, getHeight());
             
             
             g.setColor(Color.BLACK);
@@ -166,9 +174,12 @@ public class GameDisplay extends JPanel {
             g2.setStroke(new BasicStroke(3));
             g2.drawLine(getWidth()/8, getHeight()/8 *7, getWidth()/8 *2, getHeight()/8 *7);
             g2.drawLine(getWidth()/8 *2, getHeight()/8 *7, getWidth()/8 *2, getHeight());
+            g2.drawLine(getWidth()/8 *6, getHeight()/8 *7, getWidth()/8 *7, getHeight()/8 *7);
+            g2.drawLine(getWidth()/8 *6, getHeight()/8 *7, getWidth()/8 *6, getHeight());
             Font font = new Font(null, Font.PLAIN, 20);
             g2.setFont(font);
             g2.drawString(jugadores[0].getCartasPendientes() + " Cartas",getWidth()/8*6/5, getHeight()/16 *15);
+            g2.drawString("Cancelar" ,getWidth()/8*6, getHeight()/16 *15);
             if (pulsado) {
                 g.drawImage(imageOf(jugadores[0].getPrimera().getDirectorio()), cartaX, cartaY, (int) (getWidth()/3.5), (int)(getHeight()/3.5), null);
             } else {
@@ -196,6 +207,12 @@ public class GameDisplay extends JPanel {
     public void cancelarTiradaRival() {
         monton.pop();
         jugadores[1].cancelarTirada();
+        repaint();
+    }
+    
+    public void cancelarTiradaJugador() {
+        monton.pop();
+        jugadores[0].cancelarTirada();
         repaint();
     }
     
@@ -235,6 +252,10 @@ public class GameDisplay extends JPanel {
                 //primeraPintada = false;
                 inicio[0] = true;
                 cliente.notificarRival(1);
+            }
+            if (primeraPintada == false && isInCancel(e.getX(), e.getY())) {
+                cliente.notificarRival(3);
+                cancelarTiradaJugador();
             }
         }
 
