@@ -231,6 +231,7 @@ public class GameDisplay extends JPanel {
     
     public void finalPartida() {
         setVisible(false);
+        EndDisplay endDisplay = new EndDisplay(false);
     }
     
     private class CompleteMouseListener implements MouseListener, MouseMotionListener {
@@ -276,8 +277,10 @@ public class GameDisplay extends JPanel {
                     System.out.println("holaa");
                     setVisible(false);
                     cliente.notificarRival(4);
+                    EndDisplay endDisplay = new EndDisplay(true);
+                } else {
+                    jugadores[0].tirarCarta();
                 }
-                jugadores[0].tirarCarta();
                 cliente.notificarRival(2);
             }
             pressed = false;
