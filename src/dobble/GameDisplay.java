@@ -231,6 +231,10 @@ public class GameDisplay extends JPanel {
         }
     }
     
+    public void finalPartida() {
+        setVisible(false);
+    }
+    
     private class CompleteMouseListener implements MouseListener, MouseMotionListener {
 
         private boolean pressed = false;
@@ -271,6 +275,10 @@ public class GameDisplay extends JPanel {
             if(pressed && isInCenter(cartaX + (int) (getWidth()/7), cartaY)) {
                 monton.push(jugadores[0].getPrimera());
                 jugadores[0].tirarCarta();
+                if(jugadores[0].getCartasPendientes() == 0) {
+                    setVisible(false);
+                    cliente.notificarRival(4);
+                }
                 cliente.notificarRival(2);
             }
             pressed = false;
