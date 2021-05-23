@@ -205,15 +205,19 @@ public class GameDisplay extends JPanel {
     }
     
     public void cancelarTiradaRival() {
-        monton.pop();
-        jugadores[1].cancelarTirada();
-        repaint();
+        if (monton.size() > 1) {
+            monton.pop();
+            jugadores[1].cancelarTirada();
+            repaint();
+        }
     }
     
     public void cancelarTiradaJugador() {
-        monton.pop();
-        jugadores[0].cancelarTirada();
-        repaint();
+        if(monton.size() > 1) {
+            monton.pop();
+            jugadores[0].cancelarTirada();
+            repaint();
+        }
     }
     
     public void notificarInicioRival() {
