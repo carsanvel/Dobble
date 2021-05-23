@@ -58,6 +58,9 @@ public class Servidor {
                     if(paquete.getMensaje() == 3) {
                         gameDisplay.cancelarTiradaRival();
                     }
+                    if(paquete.getMensaje() == 4) {
+                        gameDisplay.finalPartida();
+                    }
                     paquete = null;
                 }
             } catch (IOException ex) {
