@@ -155,7 +155,10 @@ public class GameDisplay extends JPanel {
             g2.setFont(font);
             g2.translate((float) getWidth()/8*7 ,(float)getHeight()/8*7);
             g2.rotate(Math.toRadians(270));
-            g2.drawString("Dobble Carlos & Annia",55,80);
+            //g2.drawString("Dobble Carlos & Annia",55,80);
+            g2.drawString("Dobble Carlos & Annia",(int)(getWidth()/17.89),(int)(661/8.26));
+            System.out.println(getWidth());
+            System.out.println(getHeight());
             g2.drawString("Dobble Carlos & Annia",55,-790);
             g2.translate(-(float)getWidth()/8*7,-(float)(float)getHeight()/8*7);
         } else {
