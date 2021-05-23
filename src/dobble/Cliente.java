@@ -127,8 +127,8 @@ public class Cliente extends JFrame{
     
     public void confirmaInicio(ManoCartas[] manos, Carta carta, boolean cambiar) {
         if(cambiar) {
+            confirmado[1] = true;
             if(host == false) {
-                confirmado[1] = true;
                 this.manos = manos;
                 this.cartaExtra = carta;
             }
