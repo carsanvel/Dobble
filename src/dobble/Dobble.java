@@ -14,24 +14,6 @@ public class Dobble {
         Cliente cliente = new Cliente(servidor);
         servidor.setCliente(cliente);
         cliente.execute();
-        /*
-        Reparticion reparticion = RepartidorDeCartas.reparte(2);
-        Carta[][] cartas = reparticion.getCartas();
-        Stack<Carta> pila1 = new Stack<>();
-        Stack<Carta> pila2 = new Stack<>();
-        rellenaPila(cartas[0], pila1);
-        rellenaPila(cartas[1], pila2);
-        ManoCartas[] manos = new ManoCartas[2];
-        manos[0] = new ManoCartas(pila1);
-        manos[1] = new ManoCartas(pila2);
-                
-        MainFrame frame = new MainFrame(manos, reparticion.getCartaExtra(), cliente);
-        frame.execute();
-        
-        cliente.execute();
-                */
-        //Servidor servidor = new Servidor(frame.getGameDisplay());
-                
     }
     
     public static void print(Carta[][] cartas) {

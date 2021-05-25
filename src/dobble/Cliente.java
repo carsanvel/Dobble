@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Stack;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -31,6 +32,7 @@ public class Cliente extends JFrame{
     private Carta cartaExtra;
     
     public Cliente(Servidor servidor) {
+        setIconImage(new ImageIcon(getClass().getResource("cartaPortada.PNG")).getImage());
         host = false;
         confirmado = new boolean[2];
         confirmado[0] = false;
